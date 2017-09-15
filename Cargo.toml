@@ -1,0 +1,9 @@
+[package]
+name = "workstation"
+version = "0.1.0"
+authors = ["amar-laksh <amar.lakshya@xaviers.edu.in>"]
+
+[dependencies]
+clap = "2.26.0"
+opencv = "0.2.3"
+shells = "0.2.0"
