@@ -1,9 +1,3 @@
-// if area <= 2000 but area >= 0 then i am going away: lock the system
-// if area >= 3400 i am looking too closely show the warning.
-// after 30 mins. if there is no area for at least 1 mins straight. Remind me
-// to take a break.
-// if there is a smaller rectangle behind me as well. warn me that someone's
-// looking.
 #[macro_use]
 extern crate shells;
 extern crate opencv;
@@ -12,6 +6,7 @@ extern crate clap;
 use clap::{Arg, App};
 use opencv::*;
 use std::time::Instant; 
+
 fn run(rect: i32, timeout: i64) -> Result<(),String> {
     let xml = "./haarcascade_frontalface_alt.xml";
     let mut seen = 0;
@@ -114,7 +109,6 @@ fn main() {
                  .index(2)
                  .help("timeout for locking the desktop"))
         .get_matches();
-    
     let rect = matches.value_of("rect").unwrap().parse::<i32>().unwrap();
     let timeout = matches.value_of("timeout").unwrap().parse::<i64>().unwrap();
     run(rect, timeout).unwrap();
