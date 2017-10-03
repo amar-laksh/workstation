@@ -3,8 +3,11 @@
 extern crate shells;
 extern crate opencv;
 extern crate clap;
+extern crate notify_rust;
+
 use clap::{Arg, App};
 use opencv::*;
+use notify_rust::Notification;
 use std::time::Instant;
 use std::time::Duration;
 
@@ -42,7 +45,7 @@ fn run(rect: i32, timeout: i64) -> Result<(),String> {
                     , core::Size{ width:0, height:0 }));
             if faces.len() != 0 {
                 area = faces[0].width * faces[0].height;
-                println!("Area: {:?}, rect: {:?}", area, rect);
+                //println!("Area: {:?}, rect: {:?}", area, rect);
                 if area >= rect {
                     sh!("echo 0 > \
                     /sys/class/backlight/intel_backlight/brightness");
@@ -53,12 +56,17 @@ fn run(rect: i32, timeout: i64) -> Result<(),String> {
                 }
             } else {
                 // println!("NO FACE FOUND...WAITING TO LOCK.");
+
                 let now = Instant::now();
                 let mut elapsed;
                 let mut sec = 0;
                 let mut still_faces =
                     ::opencv::types::VectorOfRect::new();
                 let mut saved = 0;
+                Notification::new()
+                    .summary("workstation")
+                    .body(&format!("The system is locking in {} seconds", timeout))
+                    .show().unwrap();
                 while  sec <= timeout {
                     elapsed = now.elapsed();
                     sec = (
@@ -124,14 +132,20 @@ fn main() {
     let matches = App::new("workstation")
         .version("0.1.0")
         .author("Amar L. <amar.lakshya@xaviers.edu.in>")
-        .about(r#"helps you at the workstation by keeping you
-               far from screen and locks system when you are
-               away, among other things."#)
+        .about(
+r#"helps you at the workstation by keeping you
+far from screen and locks system when you are
+away, among other things."#
+ )
         .arg(Arg::with_name("rect")
                  .required(true)
                  .takes_value(true)
                  .index(1)
-                 .help("size of rectangle for screen dimming"))
+                 .help(
+r#"size of rectangle for screen dimming;
+the larger the rectangle the closer to the
+screen the trigger happens"#
+))
         .arg(Arg::with_name("timeout")
                  .required(true)
                  .takes_value(true)

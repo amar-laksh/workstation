@@ -7,6 +7,8 @@ It's a nifty commandline rust tool to make you sit slightly away from your scree
 - Rust
 - Cargo
 - *NIX
+- notify-osd
+- libnotify
 
 # INSTALL
 
@@ -17,7 +19,7 @@ It's a nifty commandline rust tool to make you sit slightly away from your scree
 
 For help:
 
-`workstation -h` 
+`workstation -h`
 
 Example usage:
 

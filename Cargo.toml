@@ -7,3 +7,4 @@ authors = ["Amar L. <amar.lakshya@xaviers.edu.in>"]
 clap = "2.26.0"
 opencv = "0.2.3"
 shells = "0.2.0"
+notify-rust = "3"
