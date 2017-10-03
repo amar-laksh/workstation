@@ -42,16 +42,14 @@ fn run(rect: i32, timeout: i64) -> Result<(),String> {
                     , core::Size{ width:0, height:0 }));
             if faces.len() != 0 {
                 area = faces[0].width * faces[0].height;
-                // println!("Area: {:?}, rect: {:?}", area, rect);
+                println!("Area: {:?}, rect: {:?}", area, rect);
                 if area >= rect {
-                    sh!(r#"echo 0 >
-                        /sys/class/backlight
-                        /intel_backlight/brightness"#);
+                    sh!("echo 0 > \
+                    /sys/class/backlight/intel_backlight/brightness");
                     seen = 1;
                 } else if area < rect && seen == 1 {
-                    sh!(r#"echo 937 >
-                        /sys/class/backlight
-                        /intel_backlight/brightness"#);
+                    sh!("echo 937 > \
+                    /sys/class/backlight/intel_backlight/brightness");
                 }
             } else {
                 // println!("NO FACE FOUND...WAITING TO LOCK.");
@@ -98,9 +96,8 @@ fn run(rect: i32, timeout: i64) -> Result<(),String> {
                             , core::Size{ width:0, height:0 }));
                     if still_faces.len() != 0 {
                         saved = 1;
-                        sh!(r#"echo 937 >
-                            /sys/class/backlight
-                            /intel_backlight/brightness"#);
+                        sh!("echo 937 > \
+                        /sys/class/backlight/intel_backlight/brightness");
                         break;
                     }
                 }
